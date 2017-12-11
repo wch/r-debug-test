@@ -22,9 +22,7 @@ elif [[ $1 = "valgrind2" ]]; then
 
 elif [[ $1 = "san" ]]; then
     suffix="san"
-    # According to https://cran.r-project.org/doc/manuals/r-devel/R-exts.html#Using-Undefined-Behaviour-Sanitizer
-    # there is a problem compiling R gcc and openmp.
-    configure_flags="--disable-openmp"
+    configure_flags=""
     # Settings borrowed from:
     # http://www.stats.ox.ac.uk/pub/bdr/memtests/README.txt
     # https://github.com/rocker-org/r-devel-san/blob/mzaster/Dockerfile
