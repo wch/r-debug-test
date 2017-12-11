@@ -1,5 +1,5 @@
 #!/bin/bash
-set -e -x
+set -x
 
 # Env vars used by configure
 export LIBnn=lib
@@ -63,32 +63,8 @@ cd /tmp/r-source
     --with-readline \
     ${configure_flags}
 
-# Do some stuff to simulate an SVN checkout.
-# https://github.com/wch/r-source/wiki
-(cd doc/manual && make front-matter html-non-svn)
-echo -n 'Revision: ' > SVN-REVISION
-git log --format=%B -n 1 \
-  | grep "^git-svn-id"    \
-  | sed -E 's/^git-svn-id: https:\/\/svn.r-project.org\/R\/[^@]*@([0-9]+).*$/\1/' \
-  >> SVN-REVISION
-echo -n 'Last Changed Date: ' >>  SVN-REVISION
-git log -1 --pretty=format:"%ad" --date=iso | cut -d' ' -f1 >> SVN-REVISION
-
-make --jobs=$(nproc)
-make install
+cat config.log
 
 # Clean up, but don't delete rsync'ed packages
 git clean -xdf -e src/library/Recommended/
 rm src/library/Recommended/Makefile
-
-# Set default CRAN repo
-echo 'options(
-  repos = c(CRAN = "https://cloud.r-project.org/"),
-  download.file.method = "libcurl",
-  # Detect number of physical cores
-  Ncpus = parallel::detectCores(logical=FALSE)
-)' >> /usr/local/${dirname}/lib/R/etc/Rprofile.site
-
-# Create RD and RDscript (with suffix) in /usr/local/bin
-cp /usr/local/${dirname}/bin/R /usr/local/bin/RD${suffix}
-cp /usr/local/${dirname}/bin/Rscript /usr/local/bin/RDscript${suffix}

@@ -58,14 +58,6 @@ RUN apt-get update && apt-get install -y \
     valgrind
 
 
-RUN echo 'options(\n\
-  repos = c(CRAN = "https://cloud.r-project.org/"),\n\
-  download.file.method = "libcurl",\n\
-  # Detect number of physical cores\n\
-  Ncpus = parallel::detectCores(logical=FALSE)\n\
-)' >> /etc/R/Rprofile.site
-
-
 # Install TinyTeX (subset of TeXLive)
 # From FAQ 5 and 6 here: https://yihui.name/tinytex/faq/
 # Also install ae, parskip, and listings packages to build R vignettes
@@ -95,4 +87,3 @@ COPY buildR.sh /tmp
 # Also increase malloc_context_size to a depth of 200 calls.
 ENV ASAN_OPTIONS 'alloc_dealloc_mismatch=0:detect_leaks=0:detect_odr_violation=0:malloc_context_size=200'
 RUN /tmp/buildR.sh san
-RUN RDsan -e 'install.packages(c("devtools", "Rcpp"))'
