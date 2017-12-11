@@ -34,7 +34,7 @@ elif [[ $1 = "san" ]]; then
     export FFLAGS="-g -O0"
     export FCFLAGS="-g -O0"
     export CXXFLAGS="${CXXFLAGS} -pedantic"
-    export MAIN_LDFLAGS="-fsanitize=address,undefined -no-pie"
+    export MAIN_LDFLAGS="-fsanitize=address,undefined"
     # Using -no-pie is a workaround for a kernel bug with ASAN which is
     # present on Docker Hub build machines. From:
     # https://github.com/google/sanitizers/issues/856#issuecomment-327657374
