@@ -82,6 +82,8 @@ RUN cd /tmp \
 
 COPY buildR.sh /tmp
 
+RUN cat /proc/cpuinfo
+
 # RDsan: R-devel with address sanitizer (ASAN) and undefined behavior sanitizer (UBSAN)
 # Entry copied from Prof Ripley's setup described at http://www.stats.ox.ac.uk/pub/bdr/memtests/README.txt
 # Also increase malloc_context_size to a depth of 200 calls.
