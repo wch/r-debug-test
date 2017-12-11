@@ -1,13 +1,12 @@
 #!/bin/bash
 set -x
 
-# Env vars used by configure. Get settings from `R CMD config CFLAGS` and
-# CXXFLAGS, but without `-O2` and `-fdebug-prefix-map=...`. The latter causes
-# the configure script to fail on Docker Hub when used with
-# `-fsanitize=address`.
+# Env vars used by configure. These settings are from `R CMD config CFLAGS`
+# and CXXFLAGS, but without `-O2` and `-fdebug-prefix-map=...`m, and with -g
+# and -O0.
 export LIBnn=lib
 export CFLAGS="-fstack-protector-strong -Wformat -Werror=format-security -Wdate-time -D_FORTIFY_SOURCE=2 -g -O0 -Wall"
-export CXXFLAGS="-fstack-protector-strong -Wformat -Werror=format-security -Wdate-time -D_FORTIFY_SOURCE=2 -g -g -O0 -Wall"
+export CXXFLAGS="-fstack-protector-strong -Wformat -Werror=format-security -Wdate-time -D_FORTIFY_SOURCE=2 -g -O0 -Wall"
 
 
 # =============================================================================
@@ -32,9 +31,9 @@ elif [[ $1 = "san" ]]; then
     # But without -mtune=native because the Docker image needs to be portable.
     export CXX="g++ -fsanitize=address,undefined,bounds-strict -fno-omit-frame-pointer"
     export CFLAGS="${CFLAGS} -pedantic -fsanitize=address"
-    export FFLAGS="${CFLAGS}"
-    export FCFLAGS="${CFLAGS}"
-    export CXXFLAGS="${CFLAGS} -pedantic"
+    export FFLAGS="-g -O0"
+    export FCFLAGS="-g -O0"
+    export CXXFLAGS="${CXXFLAGS} -pedantic"
     export MAIN_LDFLAGS="-fsanitize=address,undefined -no-pie"
     # Using -no-pie is a workaround for a kernel bug with ASAN which is
     # present on Docker Hub build machines. From:
