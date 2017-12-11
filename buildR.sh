@@ -35,6 +35,12 @@ elif [[ $1 = "san" ]]; then
     export FFLAGS="${CFLAGS}"
     export FCFLAGS="${CFLAGS}"
     export CXXFLAGS="${CFLAGS} -pedantic"
+    # Using -no-pie is a workaround for a kernel bug with ASAN which is
+    # present on Docker Hub build machines. From:
+    # https://github.com/google/sanitizers/issues/856#issuecomment-327657374
+    # Once the Docker Hub build machines get a new kernel (other than
+    # 4.4.0-93), this can be removed.
+    export LDFLAGS="${LDFLAGS} -no-pie"
     export MAIN_LDFLAGS="-fsanitize=address,undefined"
 
     # Did not copy over ~/.R/Makevars from BDR's page because other R
