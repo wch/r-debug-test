@@ -39,8 +39,10 @@ elif [[ $1 = "san" ]]; then
     # present on Docker Hub build machines. From:
     # https://github.com/google/sanitizers/issues/856#issuecomment-327657374
     # Once the Docker Hub build machines get a new kernel (other than
-    # 4.4.0-93), this can be removed.
-    export LDFLAGS="${LDFLAGS} -no-pie"
+    # 4.4.0-93-generic), this can be removed.
+    if [[ "$(uname -r)" = "4.4.0-93-generic" ]]; then
+        export LDFLAGS="${LDFLAGS} -no-pie"
+    fi
     export MAIN_LDFLAGS="-fsanitize=address,undefined"
 
     # Did not copy over ~/.R/Makevars from BDR's page because other R
