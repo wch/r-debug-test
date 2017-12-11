@@ -42,8 +42,7 @@ elif [[ $1 = "san" ]]; then
     # 4.4.0-93-generic), this can be removed.
     if [[ "$(uname -r)" = "4.4.0-93-generic" ]]; then
         export CC="gcc -no-pie"
-        export MAIN_LD="gcc -no-pie"
-        # Need -shared to come after -no-pie.
+        # Need -shared to come after -no-pie when creating shared libraries.
         # https://gcc.gnu.org/bugzilla/show_bug.cgi?id=77464
         export DYLIB_LDFLAGS="-shared"
     fi
