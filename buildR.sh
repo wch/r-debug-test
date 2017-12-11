@@ -71,6 +71,7 @@ cd /tmp/r-source
     --without-blas \
     --without-lapack \
     --with-readline \
+    --without-recommended-packages \
     ${configure_flags}
 
 cat config.log
