@@ -41,7 +41,7 @@ elif [[ $1 = "san" ]]; then
     # Once the Docker Hub build machines get a new kernel (other than
     # 4.4.0-93-generic), this can be removed.
     if [[ "$(uname -r)" = "4.4.0-93-generic" ]]; then
-        export MAIN_LDFLAGS="${MAIN_LDFLAGS} -no-pie"
+        export LDFLAGS="-no-pie"
     fi
 
     # Did not copy over ~/.R/Makevars from BDR's page because other R
