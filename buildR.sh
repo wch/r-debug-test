@@ -27,12 +27,12 @@ elif [[ $1 = "san" ]]; then
     # http://www.stats.ox.ac.uk/pub/bdr/memtests/README.txt
     # https://github.com/rocker-org/r-devel-san/blob/mzaster/Dockerfile
     # But without -mtune=native because the Docker image needs to be portable.
-    export CXX="g++ -fsanitize=address,undefined,bounds-strict -fno-omit-frame-pointer"
-    export CFLAGS="${CFLAGS} -pedantic -fsanitize=address"
+    export CXX="g++ -fsanitize=undefined,bounds-strict -fno-omit-frame-pointer"
+    export CFLAGS="${CFLAGS} -pedantic"
     export FFLAGS="${CFLAGS}"
     export FCFLAGS="${CFLAGS}"
     export CXXFLAGS="${CFLAGS} -pedantic"
-    export MAIN_LDFLAGS="-fsanitize=address,undefined"
+    export MAIN_LDFLAGS="-fsanitize=undefined"
 
     # Did not copy over ~/.R/Makevars from BDR's page because other R
     # installations would also read that file, and packages built for those
