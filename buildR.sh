@@ -1,10 +1,13 @@
 #!/bin/bash
 set -x
 
-# Env vars used by configure
+# Env vars used by configure. Get settings from `R CMD config CFLAGS` and
+# CXXFLAGS, but without `-O2` and `-fdebug-prefix-map=...`. The latter causes
+# the configure script to fail on Docker Hub when used with
+# `-fsanitize=address`.
 export LIBnn=lib
-export CFLAGS="$(R CMD config CFLAGS) -g -O0 -Wall"
-export CXXFLAGS="$(R CMD config CXXFLAGS) -g -O0 -Wall"
+export CFLAGS="-fstack-protector-strong -Wformat -Werror=format-security -Wdate-time -D_FORTIFY_SOURCE=2 -g -O0 -Wall"
+export CXXFLAGS="-fstack-protector-strong -Wformat -Werror=format-security -Wdate-time -D_FORTIFY_SOURCE=2 -g -g -O0 -Wall"
 
 
 # =============================================================================
